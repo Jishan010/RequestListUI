@@ -1,0 +1,119 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.mobility.myapplication"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:5:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:6:5-79
+12-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:6:22-76
+13
+14    <uses-feature android:name="android.hardware.camera" />
+14-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:8:5-60
+14-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:8:19-57
+15    <uses-feature android:name="android.hardware.camera.autofocus" />
+15-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:9:5-70
+15-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:9:19-67
+16
+17    <uses-permission android:name="android.permission.CAMERA" />
+17-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:11:5-65
+17-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:11:22-62
+18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+18-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:12:5-81
+18-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:12:22-78
+19    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+19-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:13:5-80
+19-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:13:22-77
+20
+21    <application
+21-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:15:5-47:19
+22        android:allowBackup="true"
+22-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:16:9-35
+23        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+23-->[androidx.core:core:1.1.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\9c933b15d9f93e76e4d82ea7601e25c9\core-1.1.0\AndroidManifest.xml:24:18-86
+24        android:debuggable="true"
+25        android:icon="@mipmap/ic_launcher"
+25-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:17:9-43
+26        android:label="@string/app_name"
+26-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:18:9-41
+27        android:roundIcon="@mipmap/ic_launcher_round"
+27-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:19:9-54
+28        android:supportsRtl="true"
+28-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:20:9-35
+29        android:testOnly="true"
+30        android:theme="@style/AppTheme" >
+30-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:21:9-40
+31        <activity
+31-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:22:9-29:20
+32            android:name="com.mobility.myapplication.view.SplashScreenActivity"
+32-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:22:19-60
+33            android:theme="@style/AppTheme.NoActionBar" >
+33-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:23:13-56
+34            <intent-filter>
+34-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:24:13-28:29
+35                <action android:name="android.intent.action.MAIN" />
+35-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:25:17-69
+35-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:25:25-66
+36
+37                <category android:name="android.intent.category.LAUNCHER" />
+37-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:27:17-77
+37-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:27:27-74
+38            </intent-filter>
+39        </activity>
+40        <activity
+40-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:31:9-35:58
+41            android:name="com.mobility.myapplication.view.MainActivity"
+41-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:32:13-46
+42            android:label="@string/app_name"
+42-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:33:13-45
+43            android:launchMode="singleTop"
+43-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:34:13-43
+44            android:theme="@style/AppTheme.NoActionBar" />
+44-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:35:13-56
+45
+46        <provider
+47            android:name="androidx.core.content.FileProvider"
+47-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:39:13-62
+48            android:authorities="com.mobility.myapplication.provider"
+48-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:40:13-60
+49            android:exported="false"
+49-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:41:13-37
+50            android:grantUriPermissions="true" >
+50-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:42:13-47
+51            <meta-data
+51-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:43:13-45:58
+52                android:name="android.support.FILE_PROVIDER_PATHS"
+52-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:44:17-67
+53                android:resource="@xml/provider_paths" />
+53-->C:\FriendRequestUI\app\src\main\AndroidManifest.xml:45:17-55
+54        </provider>
+55
+56        <service
+56-->[androidx.room:room-runtime:2.2.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\baa8cb14a9cf8eefd98ddc583cd8b97e\room-runtime-2.2.0\AndroidManifest.xml:25:9-27:40
+57            android:name="androidx.room.MultiInstanceInvalidationService"
+57-->[androidx.room:room-runtime:2.2.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\baa8cb14a9cf8eefd98ddc583cd8b97e\room-runtime-2.2.0\AndroidManifest.xml:26:13-74
+58            android:exported="false" />
+58-->[androidx.room:room-runtime:2.2.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\baa8cb14a9cf8eefd98ddc583cd8b97e\room-runtime-2.2.0\AndroidManifest.xml:27:13-37
+59
+60        <provider
+60-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\b152b3c04d3a695c87d2a265ecb4f689\lifecycle-process-2.1.0\AndroidManifest.xml:23:9-27:43
+61            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+61-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\b152b3c04d3a695c87d2a265ecb4f689\lifecycle-process-2.1.0\AndroidManifest.xml:24:13-79
+62            android:authorities="com.mobility.myapplication.lifecycle-process"
+62-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\b152b3c04d3a695c87d2a265ecb4f689\lifecycle-process-2.1.0\AndroidManifest.xml:25:13-69
+63            android:exported="false"
+63-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\b152b3c04d3a695c87d2a265ecb4f689\lifecycle-process-2.1.0\AndroidManifest.xml:26:13-37
+64            android:multiprocess="true" />
+64-->[androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\J7202687\.gradle\caches\transforms-2\files-2.1\b152b3c04d3a695c87d2a265ecb4f689\lifecycle-process-2.1.0\AndroidManifest.xml:27:13-40
+65    </application>
+66
+67</manifest>
