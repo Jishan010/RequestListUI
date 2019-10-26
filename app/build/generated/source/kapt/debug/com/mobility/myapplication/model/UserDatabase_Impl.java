@@ -24,8 +24,6 @@ import java.util.Set;
 
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class UserDatabase_Impl extends UserDatabase {
-  private volatile NameDao _nameDao;
-
   private volatile ResultDao _resultDao;
 
   @Override
@@ -36,8 +34,10 @@ public final class UserDatabase_Impl extends UserDatabase {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `result_table` (`result_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gender` TEXT, `email` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `name_table` (`name_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `first` TEXT, `last` TEXT, FOREIGN KEY(`name_id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `location_table` (`location_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `state` TEXT, `country` TEXT, FOREIGN KEY(`location_id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `dob_table` (`dob_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `age` INTEGER, FOREIGN KEY(`dob_id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `picture_table` (`picture_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `thumbnail` TEXT, FOREIGN KEY(`picture_id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93753a507642b1d3e6c92ec34c3fc70c')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a3fc354e7ab64227fbaf05a0490ec7b5')");
       }
 
       @Override
@@ -45,6 +45,8 @@ public final class UserDatabase_Impl extends UserDatabase {
         _db.execSQL("DROP TABLE IF EXISTS `result_table`");
         _db.execSQL("DROP TABLE IF EXISTS `name_table`");
         _db.execSQL("DROP TABLE IF EXISTS `location_table`");
+        _db.execSQL("DROP TABLE IF EXISTS `dob_table`");
+        _db.execSQL("DROP TABLE IF EXISTS `picture_table`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
             mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -127,9 +129,35 @@ public final class UserDatabase_Impl extends UserDatabase {
                   + " Expected:\n" + _infoLocationTable + "\n"
                   + " Found:\n" + _existingLocationTable);
         }
+        final HashMap<String, TableInfo.Column> _columnsDobTable = new HashMap<String, TableInfo.Column>(2);
+        _columnsDobTable.put("dob_id", new TableInfo.Column("dob_id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDobTable.put("age", new TableInfo.Column("age", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysDobTable = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysDobTable.add(new TableInfo.ForeignKey("result_table", "CASCADE", "NO ACTION",Arrays.asList("dob_id"), Arrays.asList("result_id")));
+        final HashSet<TableInfo.Index> _indicesDobTable = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoDobTable = new TableInfo("dob_table", _columnsDobTable, _foreignKeysDobTable, _indicesDobTable);
+        final TableInfo _existingDobTable = TableInfo.read(_db, "dob_table");
+        if (! _infoDobTable.equals(_existingDobTable)) {
+          return new RoomOpenHelper.ValidationResult(false, "dob_table(com.mobility.myapplication.model.Dob).\n"
+                  + " Expected:\n" + _infoDobTable + "\n"
+                  + " Found:\n" + _existingDobTable);
+        }
+        final HashMap<String, TableInfo.Column> _columnsPictureTable = new HashMap<String, TableInfo.Column>(2);
+        _columnsPictureTable.put("picture_id", new TableInfo.Column("picture_id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPictureTable.put("thumbnail", new TableInfo.Column("thumbnail", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysPictureTable = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysPictureTable.add(new TableInfo.ForeignKey("result_table", "CASCADE", "NO ACTION",Arrays.asList("picture_id"), Arrays.asList("result_id")));
+        final HashSet<TableInfo.Index> _indicesPictureTable = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoPictureTable = new TableInfo("picture_table", _columnsPictureTable, _foreignKeysPictureTable, _indicesPictureTable);
+        final TableInfo _existingPictureTable = TableInfo.read(_db, "picture_table");
+        if (! _infoPictureTable.equals(_existingPictureTable)) {
+          return new RoomOpenHelper.ValidationResult(false, "picture_table(com.mobility.myapplication.model.Picture).\n"
+                  + " Expected:\n" + _infoPictureTable + "\n"
+                  + " Found:\n" + _existingPictureTable);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "93753a507642b1d3e6c92ec34c3fc70c", "699e82fd8395f7f7cb30cf1bc242c863");
+    }, "a3fc354e7ab64227fbaf05a0490ec7b5", "84cc2e75d7760310fd3f1f947249eb0f");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -142,7 +170,7 @@ public final class UserDatabase_Impl extends UserDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "result_table","name_table","location_table");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "result_table","name_table","location_table","dob_table","picture_table");
   }
 
   @Override
@@ -161,6 +189,8 @@ public final class UserDatabase_Impl extends UserDatabase {
       _db.execSQL("DELETE FROM `result_table`");
       _db.execSQL("DELETE FROM `name_table`");
       _db.execSQL("DELETE FROM `location_table`");
+      _db.execSQL("DELETE FROM `dob_table`");
+      _db.execSQL("DELETE FROM `picture_table`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -170,20 +200,6 @@ public final class UserDatabase_Impl extends UserDatabase {
       _db.query("PRAGMA wal_checkpoint(FULL)").close();
       if (!_db.inTransaction()) {
         _db.execSQL("VACUUM");
-      }
-    }
-  }
-
-  @Override
-  public NameDao getNameDao() {
-    if (_nameDao != null) {
-      return _nameDao;
-    } else {
-      synchronized(this) {
-        if(_nameDao == null) {
-          _nameDao = new NameDao_Impl(this);
-        }
-        return _nameDao;
       }
     }
   }

@@ -28,11 +28,6 @@ open class UserViewModel(application: Application) : AndroidViewModel(applicatio
         return userList
     }
 
-    fun getUserName(id : Int) : Name
-    {
-        userName= userRepository!!.getUserName(id)
-        return userName!!
-    }
 
     fun insertUser(result: Results) {
         userRepository?.insertUser(result)

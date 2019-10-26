@@ -19,10 +19,11 @@ import retrofit2.Response
  * Created By J7202687 On 10/22/2019
  */
 
-@Database(entities = [Results::class, Name::class, Location::class], version = 1)
+@Database(
+    entities = [Results::class, Name::class, Location::class, Dob::class, Picture::class],
+    version = 1
+)
 abstract class UserDatabase : RoomDatabase() {
-
-    abstract fun getNameDao(): NameDao
 
     abstract fun getResultDao(): ResultDao
 
@@ -35,20 +36,16 @@ abstract class UserDatabase : RoomDatabase() {
 
         private var userDataBaseInstance: UserDatabase? = null
 
-        internal fun getInstance(context: Context): UserDatabase? {
+        fun getInstance(context: Context): UserDatabase? {
             if (userDataBaseInstance == null) {
                 userDataBaseInstance =
                     Room.databaseBuilder(context, UserDatabase::class.java, "UserDatabase")
                         .addCallback(roomCallback).build()
-
-
             }
             return userDataBaseInstance
         }
 
-
         private val roomCallback = object : RoomDatabase.Callback() {
-
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 getUserList(userDataBaseInstance)
@@ -71,13 +68,18 @@ abstract class UserDatabase : RoomDatabase() {
                         Thread {
                             val responseBody = response.body()!!
                             Log.d("Response", responseBody.results.toString())
-                            for (results in responseBody.results) {
-                                userDataBaseInstance!!.getResultDao().addResult(results)
-                                userDataBaseInstance.getNameDao().addName(results.name!!)
-                                userDataBaseInstance!!.getResultDao()
-                                    .addLocation(results.location!!)
+                            responseBody.results?.let {
+                                for (results in it) {
+                                    userDataBaseInstance!!.getResultDao().addResult(results)
+                                    userDataBaseInstance.getResultDao().addName(results.name!!)
+                                    userDataBaseInstance!!.getResultDao()
+                                        .addLocation(results.location!!)
+                                    userDataBaseInstance!!.getResultDao()
+                                        .addPicture(results.picture!!)
+                                    userDataBaseInstance!!.getResultDao()
+                                        .addDob(results.dob!!)
+                                }
                             }
-
                         }.start()
                     }
                 }

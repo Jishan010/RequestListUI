@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         userViewModel?.getUserList()?.observe(this,
             Observer<List<ResultNameData>> { users ->
                 Log.d("MainActivity", users.toString())
-
 //                userListAdapter!!.submitList(users)
             })
 
@@ -57,18 +56,6 @@ class MainActivity : AppCompatActivity() {
                 }*/
             }
         }).attachToRecyclerView(recyclerView)
-
-
-      /*  userListAdapter?.setOnItemClickListener(object : UserListAdapter.OnItemClickListener {
-            override fun updateUser(user: User) {
-                val intent = Intent(this@MainActivity, FullImageScreen::class.java)
-                intent.putExtra(ID, user.id)
-                intent.putExtra(LOGIN_USER, user.login)
-                intent.putExtra(TYPE_USER, user.type)
-                intent.putExtra(AVATAR_URL_USER, user.avatarUrl)
-                startActivityForResult(intent, UPDATE_REQUEST_CODE!!)
-            }
-        })*/
 
 
     }

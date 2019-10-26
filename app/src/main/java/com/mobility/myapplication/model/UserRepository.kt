@@ -23,16 +23,12 @@ class UserRepository(application: Application) {
     init {
         userDatabase = UserDatabase.getInstance(application)
         userDao = userDatabase!!.getResultDao()
-        nameDao = userDatabase!!.getNameDao()
     }
 
     fun insertUser(results: Results) {
         InsertAsyncTask().execute(results)
     }
 
-    fun getUserName(id: Int): Name {
-        return nameDao!!.getNameList(id)
-    }
 
     /*   fun updateNote(user: User) {
            UpdateAsyncTask().execute(user)
@@ -69,7 +65,6 @@ class UserRepository(application: Application) {
 
     companion object {
         var userDao: ResultDao? = null
-        var nameDao: NameDao? = null
     }
 
 }

@@ -19,23 +19,6 @@ data class Results(
     @ColumnInfo(name = "result_id")
     var result_id: Int = 0,
 
-    /* @Ignore
-    @SerializedName("location")
-    @Expose
-    private Location location;
-
-
-    @Ignore
-    @SerializedName("dob")
-    @Expose
-    private Dob dob;
-
-    @Ignore
-    @SerializedName("picture")
-    @Expose
-    private Picture picture;*/
-
-
     @SerializedName("gender")
     @Expose
     var gender: String? = null,
@@ -49,6 +32,16 @@ data class Results(
     @SerializedName("location")
     @Expose
     var location: Location? = null,
+
+    @Ignore
+    @SerializedName("dob")
+    @Expose
+    var dob: Dob? = null,
+
+    @Ignore
+    @SerializedName("picture")
+    @Expose
+    var picture: Picture? = null,
 
     @SerializedName("email")
     @Expose
