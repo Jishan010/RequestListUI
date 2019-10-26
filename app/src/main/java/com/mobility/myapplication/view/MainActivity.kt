@@ -1,7 +1,5 @@
 package com.mobility.myapplication.view
 
-//import com.mobility.myapplication.adapter.UserListAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -11,31 +9,30 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobility.myapplication.R
+import com.mobility.myapplication.adapter.RequestListAdapter
 import com.mobility.myapplication.model.ResultNameData
-import com.mobility.myapplication.model.Results
 import com.mobility.myapplication.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private var userViewModel: UserViewModel? = null
-    private var userList: List<Results>? = null
     private var recyclerView: RecyclerView? = null
-//    private var userListAdapter: UserListAdapter? = null
+    private var requestListAdapter: RequestListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         initRecycleView()
-//        userListAdapter = UserListAdapter()
-//        recyclerView!!.adapter = userListAdapter
+        requestListAdapter = RequestListAdapter()
+        recyclerView!!.adapter = requestListAdapter
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel?.getUserList()?.observe(this,
             Observer<List<ResultNameData>> { users ->
                 Log.d("MainActivity", users.toString())
-//                userListAdapter!!.submitList(users)
+                requestListAdapter!!.submitList(users)
             })
 
         //swipe to delete functionality starts from here
@@ -50,10 +47,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-              /*  userListAdapter?.getUsers(viewHolder.adapterPosition)?.let {
-                    //                    userViewModel?.deleteUser(it)
-                    showMessage(resources.getString(R.string.delete_success))
-                }*/
+                /*  userListAdapter?.getUsers(viewHolder.adapterPosition)?.let {
+                      //                    userViewModel?.deleteUser(it)
+                      showMessage(resources.getString(R.string.delete_success))
+                  }*/
             }
         }).attachToRecyclerView(recyclerView)
 
@@ -65,7 +62,5 @@ class MainActivity : AppCompatActivity() {
         recyclerView?.layoutManager = (LinearLayoutManager(this, RecyclerView.VERTICAL, false))
         recyclerView?.hasFixedSize()
     }
-
-
 
 }

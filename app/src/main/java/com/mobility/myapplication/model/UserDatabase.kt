@@ -2,6 +2,7 @@ package com.mobility.myapplication.model
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.room.Database
@@ -10,6 +11,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.mobility.myapplication.network.ServiceBuilder
 import com.mobility.myapplication.network.ServiceInterface
+import com.mobility.myapplication.showMessage
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
@@ -85,12 +87,6 @@ abstract class UserDatabase : RoomDatabase() {
                 }
             })
         }
-
-        /*  fun isNetworkAvailable(): Boolean {
-              val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-              val activeNetworkInfo = connectivityManager.activeNetworkInfo
-              return activeNetworkInfo != null && activeNetworkInfo.isConnected
-          }*/
 
 
     }

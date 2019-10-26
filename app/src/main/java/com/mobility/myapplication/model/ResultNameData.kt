@@ -13,6 +13,6 @@ data class ResultNameData(
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
-    val thumbnail: String? = null,
+    val medium: String? = null,
     val age: String? = null
 )

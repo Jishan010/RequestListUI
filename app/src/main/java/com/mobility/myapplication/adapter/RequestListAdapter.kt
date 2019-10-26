@@ -1,4 +1,3 @@
-/*
 package com.mobility.myapplication.adapter
 
 import android.view.LayoutInflater
@@ -13,29 +12,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.mobility.myapplication.R
+import com.mobility.myapplication.model.ResultNameData
 
-
-*/
 /**
  *
- * Created By J7202687 On 10/22/2019
- *//*
+ * Created By JISHAN ANSARI On 10/26/2019
+ */
 
-
-
-*/
-/**
- * here we're using listAdapter abstract class which is base class of recyclerView
- * to make use of awesome api diffutil which enables add and remove animation on list item notify data set change
- *//*
-
-class UserListAdapter : ListAdapter<User, UserListAdapter.MyUserViewHolder>(diffCallback) {
+class RequestListAdapter : ListAdapter<ResultNameData, RequestListAdapter.MyUserViewHolder>(diffCallback) {
 
     //    private List<Note> notes = new ArrayList<>();
     private var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyUserViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.note_adapter, null)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.request_list_adapter, null)
         return MyUserViewHolder(view)
     }
 
@@ -46,7 +36,7 @@ class UserListAdapter : ListAdapter<User, UserListAdapter.MyUserViewHolder>(diff
     }
 
 
-    fun getUsers(position: Int): User? {
+    fun getUsers(position: Int): ResultNameData? {
         return getItem(position)
     }
 
@@ -61,17 +51,17 @@ class UserListAdapter : ListAdapter<User, UserListAdapter.MyUserViewHolder>(diff
             itemView.setOnClickListener { onItemClickListener!!.updateUser(getUsers(adapterPosition)!!) }
         }
 
-        fun onBind(user: User) {
-            userNameTextView.text = user.login
-            userTypeTextView.text = user.type
+        fun onBind(user: ResultNameData) {
+            userNameTextView.text = user.first
+            userTypeTextView.text = user.email
             val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
-            Glide.with(itemView.context).load(user.avatarUrl).apply(requestOptions.override(80, 80))
+            Glide.with(itemView.context).load(user.medium).apply(requestOptions)
                 .into(imageView)
         }
     }
 
     interface OnItemClickListener {
-        fun updateUser(user: User)
+        fun updateUser(user: ResultNameData)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -79,18 +69,17 @@ class UserListAdapter : ListAdapter<User, UserListAdapter.MyUserViewHolder>(diff
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<User>() {
-            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-                return oldItem.id === newItem.id
+        private val diffCallback = object : DiffUtil.ItemCallback<ResultNameData>() {
+            override fun areItemsTheSame(oldItem: ResultNameData, newItem: ResultNameData): Boolean {
+                return oldItem.email === newItem.email
             }
 
-            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-                return oldItem.login.equals(newItem.login) && oldItem.type.equals(
-                    newItem.type
+            override fun areContentsTheSame(oldItem: ResultNameData, newItem: ResultNameData): Boolean {
+                return oldItem.city.equals(newItem.city) && oldItem.medium.equals(
+                    newItem.medium
                 )
             }
         }
     }
 
 }
-*/
