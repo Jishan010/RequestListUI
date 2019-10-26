@@ -15,6 +15,6 @@ interface NameDao {
     @Insert
     fun addName(name: Name)
 
-    @Query("select * from name_table where id=:id")
-    fun getNameList(id: Int): Name
+    @Query("select * from name_table where name_id=:name_id")
+    fun getNameList(name_id: Int): Name
 }

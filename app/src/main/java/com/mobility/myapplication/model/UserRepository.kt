@@ -12,11 +12,11 @@ import androidx.lifecycle.LiveData
 class UserRepository(application: Application) {
 
     private var userDatabase: UserDatabase? = null
-    private var userList: LiveData<List<Results>>? = null
+    private var userList: LiveData<List<ResultNameData>>? = null
 
-    val users: LiveData<List<Results>>
+    val users: LiveData<List<ResultNameData>>
         get() {
-            userList = userDao?.getResultLists()!!
+            userList = userDao?.getResultNameDataList()!!
             return userList!!
         }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.mobility.myapplication.model.Name
+import com.mobility.myapplication.model.ResultNameData
 import com.mobility.myapplication.model.Results
 import com.mobility.myapplication.model.UserRepository
 
@@ -15,7 +16,7 @@ import com.mobility.myapplication.model.UserRepository
 open class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private var userRepository: UserRepository? = null
-    private var userList: LiveData<List<Results>>? = null
+    private var userList: LiveData<List<ResultNameData>>? = null
     private var userName: Name? = null
 
     init {
@@ -23,7 +24,7 @@ open class UserViewModel(application: Application) : AndroidViewModel(applicatio
         userList = userRepository!!.users
     }
 
-    fun getUserList(): LiveData<List<Results>>? {
+    fun getUserList(): LiveData<List<ResultNameData>>? {
         return userList
     }
 

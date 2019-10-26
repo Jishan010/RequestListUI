@@ -45,6 +45,11 @@ data class Results(
     @Expose
     var name: Name? = null,
 
+    @Ignore
+    @SerializedName("location")
+    @Expose
+    var location: Location? = null,
+
     @SerializedName("email")
     @Expose
     var email: String? = null

@@ -5,10 +5,10 @@ import java.lang.System;
 /**
  * Created By J7202687 On 10/22/2019
  */
-@kotlin.Metadata(mv = {1, 1, 15}, bv = {1, 0, 3}, k = 1, d1 = {"\u0000<\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0004\u0018\u0000 \u00152\u00020\u0001:\u0002\u0015\u0016B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\u0002\u0010\u0004J\u000e\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00020\u0011J\u000e\u0010\u0012\u001a\u00020\u00132\u0006\u0010\u0014\u001a\u00020\nR\u0010\u0010\u0005\u001a\u0004\u0018\u00010\u0006X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u001c\u0010\u0007\u001a\u0010\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t\u0018\u00010\bX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u001d\u0010\u000b\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t0\b8F\u00a2\u0006\u0006\u001a\u0004\b\f\u0010\r\u00a8\u0006\u0017"}, d2 = {"Lcom/mobility/myapplication/model/UserRepository;", "", "application", "Landroid/app/Application;", "(Landroid/app/Application;)V", "userDatabase", "Lcom/mobility/myapplication/model/UserDatabase;", "userList", "Landroidx/lifecycle/LiveData;", "", "Lcom/mobility/myapplication/model/Results;", "users", "getUsers", "()Landroidx/lifecycle/LiveData;", "getUserName", "Lcom/mobility/myapplication/model/Name;", "id", "", "insertUser", "", "results", "Companion", "InsertAsyncTask", "app_debug"})
+@kotlin.Metadata(mv = {1, 1, 15}, bv = {1, 0, 3}, k = 1, d1 = {"\u0000B\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\u0018\u0000 \u00162\u00020\u0001:\u0002\u0016\u0017B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\u0002\u0010\u0004J\u000e\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00020\u0011J\u000e\u0010\u0012\u001a\u00020\u00132\u0006\u0010\u0014\u001a\u00020\u0015R\u0010\u0010\u0005\u001a\u0004\u0018\u00010\u0006X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u001c\u0010\u0007\u001a\u0010\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t\u0018\u00010\bX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u001d\u0010\u000b\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t0\b8F\u00a2\u0006\u0006\u001a\u0004\b\f\u0010\r\u00a8\u0006\u0018"}, d2 = {"Lcom/mobility/myapplication/model/UserRepository;", "", "application", "Landroid/app/Application;", "(Landroid/app/Application;)V", "userDatabase", "Lcom/mobility/myapplication/model/UserDatabase;", "userList", "Landroidx/lifecycle/LiveData;", "", "Lcom/mobility/myapplication/model/ResultNameData;", "users", "getUsers", "()Landroidx/lifecycle/LiveData;", "getUserName", "Lcom/mobility/myapplication/model/Name;", "id", "", "insertUser", "", "results", "Lcom/mobility/myapplication/model/Results;", "Companion", "InsertAsyncTask", "app_debug"})
 public final class UserRepository {
     private com.mobility.myapplication.model.UserDatabase userDatabase;
-    private androidx.lifecycle.LiveData<java.util.List<com.mobility.myapplication.model.Results>> userList;
+    private androidx.lifecycle.LiveData<java.util.List<com.mobility.myapplication.model.ResultNameData>> userList;
     @org.jetbrains.annotations.Nullable()
     private static com.mobility.myapplication.model.ResultDao userDao;
     @org.jetbrains.annotations.Nullable()
@@ -16,7 +16,7 @@ public final class UserRepository {
     public static final com.mobility.myapplication.model.UserRepository.Companion Companion = null;
     
     @org.jetbrains.annotations.NotNull()
-    public final androidx.lifecycle.LiveData<java.util.List<com.mobility.myapplication.model.Results>> getUsers() {
+    public final androidx.lifecycle.LiveData<java.util.List<com.mobility.myapplication.model.ResultNameData>> getUsers() {
         return null;
     }
     

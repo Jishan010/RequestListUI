@@ -34,15 +34,17 @@ public final class UserDatabase_Impl extends UserDatabase {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `result_table` (`result_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gender` TEXT, `email` TEXT)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `name_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `result_id_column` INTEGER NOT NULL, `title` TEXT, `first` TEXT, `last` TEXT, FOREIGN KEY(`id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `name_table` (`name_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `first` TEXT, `last` TEXT, FOREIGN KEY(`name_id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `location_table` (`location_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `state` TEXT, `country` TEXT, FOREIGN KEY(`location_id`) REFERENCES `result_table`(`result_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '968d8defdd64bf6c207001fb1b1d210d')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93753a507642b1d3e6c92ec34c3fc70c')");
       }
 
       @Override
       public void dropAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("DROP TABLE IF EXISTS `result_table`");
         _db.execSQL("DROP TABLE IF EXISTS `name_table`");
+        _db.execSQL("DROP TABLE IF EXISTS `location_table`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
             mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -95,14 +97,13 @@ public final class UserDatabase_Impl extends UserDatabase {
                   + " Expected:\n" + _infoResultTable + "\n"
                   + " Found:\n" + _existingResultTable);
         }
-        final HashMap<String, TableInfo.Column> _columnsNameTable = new HashMap<String, TableInfo.Column>(5);
-        _columnsNameTable.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNameTable.put("result_id_column", new TableInfo.Column("result_id_column", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashMap<String, TableInfo.Column> _columnsNameTable = new HashMap<String, TableInfo.Column>(4);
+        _columnsNameTable.put("name_id", new TableInfo.Column("name_id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsNameTable.put("title", new TableInfo.Column("title", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsNameTable.put("first", new TableInfo.Column("first", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsNameTable.put("last", new TableInfo.Column("last", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysNameTable = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysNameTable.add(new TableInfo.ForeignKey("result_table", "CASCADE", "NO ACTION",Arrays.asList("id"), Arrays.asList("result_id")));
+        _foreignKeysNameTable.add(new TableInfo.ForeignKey("result_table", "CASCADE", "NO ACTION",Arrays.asList("name_id"), Arrays.asList("result_id")));
         final HashSet<TableInfo.Index> _indicesNameTable = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoNameTable = new TableInfo("name_table", _columnsNameTable, _foreignKeysNameTable, _indicesNameTable);
         final TableInfo _existingNameTable = TableInfo.read(_db, "name_table");
@@ -111,9 +112,24 @@ public final class UserDatabase_Impl extends UserDatabase {
                   + " Expected:\n" + _infoNameTable + "\n"
                   + " Found:\n" + _existingNameTable);
         }
+        final HashMap<String, TableInfo.Column> _columnsLocationTable = new HashMap<String, TableInfo.Column>(4);
+        _columnsLocationTable.put("location_id", new TableInfo.Column("location_id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocationTable.put("city", new TableInfo.Column("city", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocationTable.put("state", new TableInfo.Column("state", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsLocationTable.put("country", new TableInfo.Column("country", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysLocationTable = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysLocationTable.add(new TableInfo.ForeignKey("result_table", "CASCADE", "NO ACTION",Arrays.asList("location_id"), Arrays.asList("result_id")));
+        final HashSet<TableInfo.Index> _indicesLocationTable = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoLocationTable = new TableInfo("location_table", _columnsLocationTable, _foreignKeysLocationTable, _indicesLocationTable);
+        final TableInfo _existingLocationTable = TableInfo.read(_db, "location_table");
+        if (! _infoLocationTable.equals(_existingLocationTable)) {
+          return new RoomOpenHelper.ValidationResult(false, "location_table(com.mobility.myapplication.model.Location).\n"
+                  + " Expected:\n" + _infoLocationTable + "\n"
+                  + " Found:\n" + _existingLocationTable);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "968d8defdd64bf6c207001fb1b1d210d", "6ed8f7d697db3a030efa3313cef37051");
+    }, "93753a507642b1d3e6c92ec34c3fc70c", "699e82fd8395f7f7cb30cf1bc242c863");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -126,7 +142,7 @@ public final class UserDatabase_Impl extends UserDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "result_table","name_table");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "result_table","name_table","location_table");
   }
 
   @Override
@@ -144,6 +160,7 @@ public final class UserDatabase_Impl extends UserDatabase {
       }
       _db.execSQL("DELETE FROM `result_table`");
       _db.execSQL("DELETE FROM `name_table`");
+      _db.execSQL("DELETE FROM `location_table`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();

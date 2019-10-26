@@ -19,7 +19,7 @@ import retrofit2.Response
  * Created By J7202687 On 10/22/2019
  */
 
-@Database(entities = [Results::class, Name::class], version = 1)
+@Database(entities = [Results::class, Name::class, Location::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
 
     abstract fun getNameDao(): NameDao
@@ -73,7 +73,9 @@ abstract class UserDatabase : RoomDatabase() {
                             Log.d("Response", responseBody.results.toString())
                             for (results in responseBody.results) {
                                 userDataBaseInstance!!.getResultDao().addResult(results)
-                                userDataBaseInstance!!.getNameDao().addName(results.name!!)
+                                userDataBaseInstance.getNameDao().addName(results.name!!)
+                                userDataBaseInstance!!.getResultDao()
+                                    .addLocation(results.location!!)
                             }
 
                         }.start()
