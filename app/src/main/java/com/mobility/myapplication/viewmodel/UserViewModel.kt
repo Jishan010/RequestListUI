@@ -17,7 +17,6 @@ open class UserViewModel(application: Application) : AndroidViewModel(applicatio
 
     private var userRepository: UserRepository? = null
     private var userList: LiveData<List<ResultNameData>>? = null
-    private var userName: Name? = null
 
     init {
         userRepository = UserRepository(application)
