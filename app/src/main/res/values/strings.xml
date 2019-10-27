@@ -7,4 +7,8 @@
     <string name="default_result">default result</string>
     <string name="accept">Member accepted</string>
     <string name="reject">Member declined</string>
+    <string name="decline">Decline</string>
+    <string name="accept_button">Accept</string>
+    <string name="description">Description</string>
+    <string name="message">Message</string>
 </resources>
