@@ -10,7 +10,7 @@ import com.mobility.myapplication.model.UserRepository
 
 /**
  *
- * Created By J7202687 On 10/22/2019
+ * Created By JISHAN ANSARI On 10/26/2019
  */
 
 open class UserViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,19 +23,19 @@ open class UserViewModel(application: Application) : AndroidViewModel(applicatio
         userList = userRepository!!.users
     }
 
-    fun getUserList(): LiveData<List<ResultNameData>>? {
+    fun getResultList(): LiveData<List<ResultNameData>>? {
         return userList
     }
 
+    fun updateResult(result: Results) {
+        userRepository?.updateUser(result)
+    }
 
     fun insertUser(result: Results) {
         userRepository?.insertUser(result)
     }
 
-  /*  fun updateUser(user: User) {
-        userRepository?.updateNote(user)
-    }
-
+  /*
     fun deleteUser(user: User) {
         userRepository?.deleteNote(user)
     }*/

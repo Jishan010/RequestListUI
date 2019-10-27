@@ -45,6 +45,8 @@ data class Results(
 
     @SerializedName("email")
     @Expose
-    var email: String? = null
+    var email: String? = null,
+
+    var messageStatus: String? = null
 
 )

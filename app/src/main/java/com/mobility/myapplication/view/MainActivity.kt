@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobility.myapplication.R
 import com.mobility.myapplication.adapter.RequestListAdapter
 import com.mobility.myapplication.model.ResultNameData
+import com.mobility.myapplication.model.Results
+import com.mobility.myapplication.showMessage
 import com.mobility.myapplication.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener {
 
     private var userViewModel: UserViewModel? = null
     private var recyclerView: RecyclerView? = null
@@ -27,9 +29,10 @@ class MainActivity : AppCompatActivity() {
         initRecycleView()
         requestListAdapter = RequestListAdapter()
         recyclerView!!.adapter = requestListAdapter
+        requestListAdapter!!.setOnItemClickListener(this)
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
-        userViewModel?.getUserList()?.observe(this,
+        userViewModel?.getResultList()?.observe(this,
             Observer<List<ResultNameData>> { users ->
                 Log.d("MainActivity", users.toString())
                 requestListAdapter!!.submitList(users)
@@ -53,8 +56,28 @@ class MainActivity : AppCompatActivity() {
                   }*/
             }
         }).attachToRecyclerView(recyclerView)
+    }
 
-
+    override fun updateUser(results: ResultNameData, viewType: Int) {
+        val result = Results()
+        result.result_id = results.result_id!!
+        when (viewType) {
+            R.id.addFloatingActionButton -> {
+                showMessage("Add button clicked")
+                userViewModel?.let {
+                    result.messageStatus = "accepted"
+                    it.updateResult(result)
+                }
+            }
+            R.id.removeFloatingActionButton -> {
+                showMessage("Remove button clicked")
+                userViewModel?.let {
+                    result.messageStatus = "rejected"
+                    it.updateResult(result)
+                }
+            }
+            else -> showMessage("No button clicked")
+        }
     }
 
     private fun initRecycleView() {

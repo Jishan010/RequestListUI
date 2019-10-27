@@ -13,6 +13,8 @@ data class ResultNameData(
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
-    val medium: String? = null,
-    val age: String? = null
+    val large: String? = null,
+    val age: String? = null,
+    val messageStatus: String? = null,
+    val result_id: Int? = 0
 )
