@@ -16,16 +16,18 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="10dp"
-            android:elevation="2dp"
             android:padding="5dp"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="10"
+            app:civ_shadow_color="#A6A6B8"
             android:src="@drawable/ic_launcher_foreground"
-            app:civ_border_color="#FDFDFD"
-            app:civ_border_width="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

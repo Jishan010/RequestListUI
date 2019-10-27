@@ -13,10 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mikhaellopez.circularimageview.CircularImageView
 import com.mobility.myapplication.R
 import com.mobility.myapplication.model.ResultJoinData
 import com.mobility.myapplication.view.MainActivity
-import de.hdodenhof.circleimageview.CircleImageView
 
 /**
  *
@@ -51,7 +51,7 @@ class RequestListAdapter :
             itemView.findViewById(R.id.userNameTextView)
         private val descriptionTextView: TextView =
             itemView.findViewById(R.id.descriptionTextView)
-        private var imageView: CircleImageView =
+        private var imageView: CircularImageView =
             itemView.findViewById(R.id.imageView)
         private var buttonGroup: Group =
             itemView.findViewById(R.id.buttonGroup)
@@ -93,10 +93,13 @@ class RequestListAdapter :
             userNameTextView.text = user.first + " " + user.last
             descriptionTextView.text =
                 user.age + " , " + user.email + " , " + user.city + " , " + user.state + " , " + user.country
-            val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
-            Glide.with(itemView.context).load(user.large).apply(requestOptions)
-                .into(imageView)
 
+            user.large?.let {
+
+                val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+                Glide.with(itemView.context).load(user.large).apply(requestOptions)
+                    .into(imageView)
+            }
             user.messageStatus?.let {
                 when (it) {
                     MainActivity.ACCEPT -> {

@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName
 data class Picture(
     @PrimaryKey(autoGenerate = true)
     var picture_id: Int = 0,
-    @SerializedName("large")
+    @SerializedName("medium")
     @Expose
     var large: String? = null
 )
