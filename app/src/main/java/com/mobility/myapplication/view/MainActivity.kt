@@ -22,6 +22,11 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
     private var recyclerView: RecyclerView? = null
     private var requestListAdapter: RequestListAdapter? = null
 
+    companion object {
+
+        val TAG: String = MainActivity::class.java.simpleName
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,7 +39,7 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel?.getResultList()?.observe(this,
             Observer<List<ResultNameData>> { users ->
-                Log.d("MainActivity", users.toString())
+                Log.d(TAG, users.toString())
                 requestListAdapter!!.submitList(users)
             })
 
@@ -50,10 +55,12 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                /*  userListAdapter?.getUsers(viewHolder.adapterPosition)?.let {
-                      //                    userViewModel?.deleteUser(it)
-                      showMessage(resources.getString(R.string.delete_success))
-                  }*/
+                requestListAdapter?.getUsers(viewHolder.adapterPosition)?.let {
+                    val result = Results()
+                    result.result_id = it.result_id!!
+                    userViewModel?.deleteUser(result)
+                    showMessage(resources.getString(R.string.delete_success))
+                }
             }
         }).attachToRecyclerView(recyclerView)
     }

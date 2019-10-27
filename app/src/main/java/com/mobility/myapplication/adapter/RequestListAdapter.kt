@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +39,6 @@ class RequestListAdapter :
         holder.onBind(user)
     }
 
-
     fun getUsers(position: Int): ResultNameData? {
         return getItem(position)
     }
@@ -56,14 +56,17 @@ class RequestListAdapter :
             itemView.findViewById(R.id.buttonGroup)
         private var messageGroup: Group =
             itemView.findViewById(R.id.messageGroup)
-
-
         private var addFloatingActionButton: FloatingActionButton =
             itemView.findViewById(R.id.addFloatingActionButton)
 
         private var removeFloatingActionButton: FloatingActionButton =
             itemView.findViewById(R.id.removeFloatingActionButton)
 
+        private var view: View =
+            itemView.findViewById(R.id.view)
+
+        private var messageTextView: TextView =
+            itemView.findViewById(R.id.messageTextView)
 
         init {
             addFloatingActionButton.setOnClickListener {
@@ -82,12 +85,62 @@ class RequestListAdapter :
         }
 
         fun onBind(user: ResultNameData) {
+
+            buttonGroup.visibility = View.VISIBLE
+            messageGroup.visibility = View.GONE
+
             userNameTextView.text = user.first + " " + user.last
             descriptionTextView.text =
                 user.age + " , " + user.email + " , " + user.city + " , " + user.state + " , " + user.country
             val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
             Glide.with(itemView.context).load(user.large).apply(requestOptions)
                 .into(imageView)
+
+            user.messageStatus?.let {
+                when (it) {
+                    "accepted" -> {
+                        buttonGroup.visibility = View.GONE
+                        messageGroup.visibility = View.VISIBLE
+
+                        messageTextView.text = "member accepted"
+                        view.setBackgroundColor(
+                            ContextCompat.getColor(
+                                itemView.context,
+                                R.color.colorGreen
+                            )
+                        )
+                        messageTextView.setTextColor(
+                            ContextCompat.getColor(
+                                itemView.context,
+                                android.R.color.white
+                            )
+                        )
+                    }
+                    "rejected" -> {
+                        buttonGroup.visibility = View.GONE
+                        messageGroup.visibility = View.VISIBLE
+                        messageTextView.text = "member declined"
+
+                        view.setBackgroundColor(
+                            ContextCompat.getColor(
+                                itemView.context,
+                                R.color.colorGrey
+                            )
+                        )
+                        messageTextView.setTextColor(
+                            ContextCompat.getColor(
+                                itemView.context,
+                                R.color.greyTextColor
+                            )
+                        )
+
+                    }
+                    else -> {
+                        buttonGroup.visibility = View.VISIBLE
+                        messageGroup.visibility = View.GONE
+                    }
+                }
+            }
         }
     }
 
@@ -105,14 +158,14 @@ class RequestListAdapter :
                 oldItem: ResultNameData,
                 newItem: ResultNameData
             ): Boolean {
-                return oldItem.email === newItem.email
+                return oldItem.result_id === newItem.result_id
             }
 
             override fun areContentsTheSame(
                 oldItem: ResultNameData,
                 newItem: ResultNameData
             ): Boolean {
-                return oldItem.city.equals(newItem.city) && oldItem.large.equals(
+                return oldItem.email.equals(newItem.email) && oldItem.large.equals(
                     newItem.large
                 )
             }

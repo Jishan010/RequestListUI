@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 
 /**
  *
- * Created By J7202687 On 10/22/2019
+ * Created By JISHAN ANSARI On 10/26/2019
  */
 
 class UserRepository(application: Application) {
@@ -25,30 +25,17 @@ class UserRepository(application: Application) {
         userDao = userDatabase!!.getResultDao()
     }
 
-    fun insertUser(results: Results) {
-        InsertAsyncTask().execute(results)
-    }
 
     fun updateUser(results: Results) {
         UpdateAsyncTask().execute(results)
     }
-    /*   fun updateNote(user: User) {
-           UpdateAsyncTask().execute(user)
-       }
 
-       fun deleteNote(user: User) {
-           DeleteAsyncTask().execute(user)
-       }*/
-
-
-    //async task for inserting users
-    class InsertAsyncTask : AsyncTask<Results, Void, Void>() {
-        override fun doInBackground(vararg results: Results): Void? {
-            userDao?.addResult(results[0])
-            return null
-        }
+    fun deleteUser(user: Results) {
+        DeleteAsyncTask().execute(user)
     }
 
+
+    //async task for updating users
     class UpdateAsyncTask : AsyncTask<Results, Void, Void>() {
         override fun doInBackground(vararg results: Results): Void? {
             userDao?.updateResult(results[0])
@@ -56,16 +43,13 @@ class UserRepository(application: Application) {
         }
     }
 
-    /* //async task for deleting users
-     class DeleteAsyncTask : AsyncTask<User, Void, Void>() {
-         override fun doInBackground(vararg users: User): Void? {
-             userDao?.deleteUser(users[0])
+     //async task for deleting users
+     class DeleteAsyncTask : AsyncTask<Results, Void, Void>() {
+         override fun doInBackground(vararg results: Results): Void? {
+             userDao?.deleteResult(results[0])
              return null
          }
      }
-
-     //async task for updating users
-    */
 
     companion object {
         var userDao: ResultDao? = null

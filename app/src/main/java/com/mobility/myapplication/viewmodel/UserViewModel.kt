@@ -30,13 +30,7 @@ open class UserViewModel(application: Application) : AndroidViewModel(applicatio
     fun updateResult(result: Results) {
         userRepository?.updateUser(result)
     }
-
-    fun insertUser(result: Results) {
-        userRepository?.insertUser(result)
+    fun deleteUser(result: Results) {
+        userRepository?.deleteUser(result)
     }
-
-  /*
-    fun deleteUser(user: User) {
-        userRepository?.deleteNote(user)
-    }*/
 }
