@@ -4,7 +4,7 @@ package com.mobility.myapplication.model
  * Created By JISHAN ANSARI On 10/26/2019
  */
 
-data class ResultNameData(
+data class ResultJoinData(
     val title: String? = null,
     val first: String? = null,
     val last: String? = null,

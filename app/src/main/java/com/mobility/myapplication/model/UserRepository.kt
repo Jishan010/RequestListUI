@@ -12,9 +12,9 @@ import androidx.lifecycle.LiveData
 class UserRepository(application: Application) {
 
     private var userDatabase: UserDatabase? = null
-    private var userList: LiveData<List<ResultNameData>>? = null
+    private var userList: LiveData<List<ResultJoinData>>? = null
 
-    val users: LiveData<List<ResultNameData>>
+    val users: LiveData<List<ResultJoinData>>
         get() {
             userList = userDao?.getResultNameDataList()!!
             return userList!!
@@ -25,12 +25,11 @@ class UserRepository(application: Application) {
         userDao = userDatabase!!.getResultDao()
     }
 
-
-    fun updateUser(results: Results) {
+    fun updateResult(results: Results) {
         UpdateAsyncTask().execute(results)
     }
 
-    fun deleteUser(user: Results) {
+    fun deleteResult(user: Results) {
         DeleteAsyncTask().execute(user)
     }
 

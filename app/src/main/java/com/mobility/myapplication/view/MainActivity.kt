@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobility.myapplication.R
 import com.mobility.myapplication.adapter.RequestListAdapter
-import com.mobility.myapplication.model.ResultNameData
+import com.mobility.myapplication.model.ResultJoinData
 import com.mobility.myapplication.model.Results
 import com.mobility.myapplication.showMessage
 import com.mobility.myapplication.viewmodel.UserViewModel
@@ -23,8 +23,9 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
     private var requestListAdapter: RequestListAdapter? = null
 
     companion object {
-
         val TAG: String = MainActivity::class.java.simpleName
+        const val ACCEPT: String = "accepted"
+        const val REJECT: String = "rejected"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         userViewModel?.getResultList()?.observe(this,
-            Observer<List<ResultNameData>> { users ->
+            Observer<List<ResultJoinData>> { users ->
                 Log.d(TAG, users.toString())
                 requestListAdapter!!.submitList(users)
             })
@@ -58,32 +59,34 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
                 requestListAdapter?.getUsers(viewHolder.adapterPosition)?.let {
                     val result = Results()
                     result.result_id = it.result_id!!
-                    userViewModel?.deleteUser(result)
+                    userViewModel?.deleteResult(result)
                     showMessage(resources.getString(R.string.delete_success))
                 }
             }
         }).attachToRecyclerView(recyclerView)
     }
 
-    override fun updateUser(results: ResultNameData, viewType: Int) {
+    override fun updateUser(results: ResultJoinData, viewType: Int) {
         val result = Results()
         result.result_id = results.result_id!!
+        result.email = results.email!!
+        result.gender = results.gender!!
         when (viewType) {
             R.id.addFloatingActionButton -> {
-                showMessage("Add button clicked")
+                showMessage(resources.getString(R.string.update_success))
                 userViewModel?.let {
-                    result.messageStatus = "accepted"
+                    result.messageStatus = ACCEPT
                     it.updateResult(result)
                 }
             }
             R.id.removeFloatingActionButton -> {
-                showMessage("Remove button clicked")
+                showMessage(resources.getString(R.string.update_success))
                 userViewModel?.let {
-                    result.messageStatus = "rejected"
+                    result.messageStatus = REJECT
                     it.updateResult(result)
                 }
             }
-            else -> showMessage("No button clicked")
+            else -> showMessage(resources.getString(R.string.default_result))
         }
     }
 

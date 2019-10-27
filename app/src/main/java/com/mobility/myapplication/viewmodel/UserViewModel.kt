@@ -3,8 +3,7 @@ package com.mobility.myapplication.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.mobility.myapplication.model.Name
-import com.mobility.myapplication.model.ResultNameData
+import com.mobility.myapplication.model.ResultJoinData
 import com.mobility.myapplication.model.Results
 import com.mobility.myapplication.model.UserRepository
 
@@ -16,21 +15,21 @@ import com.mobility.myapplication.model.UserRepository
 open class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private var userRepository: UserRepository? = null
-    private var userList: LiveData<List<ResultNameData>>? = null
+    private var userList: LiveData<List<ResultJoinData>>? = null
 
     init {
         userRepository = UserRepository(application)
         userList = userRepository!!.users
     }
 
-    fun getResultList(): LiveData<List<ResultNameData>>? {
+    fun getResultList(): LiveData<List<ResultJoinData>>? {
         return userList
     }
 
     fun updateResult(result: Results) {
-        userRepository?.updateUser(result)
+        userRepository?.updateResult(result)
     }
-    fun deleteUser(result: Results) {
-        userRepository?.deleteUser(result)
+    fun deleteResult(result: Results) {
+        userRepository?.deleteResult(result)
     }
 }

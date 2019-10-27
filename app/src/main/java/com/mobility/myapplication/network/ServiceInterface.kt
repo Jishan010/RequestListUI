@@ -7,13 +7,10 @@ import retrofit2.http.Query
 
 /**
  *
- * Created By J7202687 On 10/22/2019
+ * Created By JISHAN ANSARI On 10/26/2019
  */
 
 interface ServiceInterface {
-
-
     @GET("api/")
     fun getFriendRequestsList(@Query("results") results: String): Call<Example>
-
 }

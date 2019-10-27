@@ -14,7 +14,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mobility.myapplication.R
-import com.mobility.myapplication.model.ResultNameData
+import com.mobility.myapplication.model.ResultJoinData
+import com.mobility.myapplication.view.MainActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -23,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView
  */
 
 class RequestListAdapter :
-    ListAdapter<ResultNameData, RequestListAdapter.MyUserViewHolder>(diffCallback) {
+    ListAdapter<ResultJoinData, RequestListAdapter.MyUserViewHolder>(diffCallback) {
 
     private var onItemClickListener: OnItemClickListener? = null
 
@@ -39,7 +40,7 @@ class RequestListAdapter :
         holder.onBind(user)
     }
 
-    fun getUsers(position: Int): ResultNameData? {
+    fun getUsers(position: Int): ResultJoinData? {
         return getItem(position)
     }
 
@@ -84,7 +85,7 @@ class RequestListAdapter :
             }
         }
 
-        fun onBind(user: ResultNameData) {
+        fun onBind(user: ResultJoinData) {
 
             buttonGroup.visibility = View.VISIBLE
             messageGroup.visibility = View.GONE
@@ -98,11 +99,11 @@ class RequestListAdapter :
 
             user.messageStatus?.let {
                 when (it) {
-                    "accepted" -> {
+                    MainActivity.ACCEPT -> {
                         buttonGroup.visibility = View.GONE
                         messageGroup.visibility = View.VISIBLE
 
-                        messageTextView.text = "member accepted"
+                        messageTextView.text = itemView.context.resources.getString(R.string.accept)
                         view.setBackgroundColor(
                             ContextCompat.getColor(
                                 itemView.context,
@@ -116,10 +117,10 @@ class RequestListAdapter :
                             )
                         )
                     }
-                    "rejected" -> {
+                    MainActivity.REJECT -> {
                         buttonGroup.visibility = View.GONE
                         messageGroup.visibility = View.VISIBLE
-                        messageTextView.text = "member declined"
+                        messageTextView.text = itemView.context.resources.getString(R.string.reject)
 
                         view.setBackgroundColor(
                             ContextCompat.getColor(
@@ -145,7 +146,7 @@ class RequestListAdapter :
     }
 
     interface OnItemClickListener {
-        fun updateUser(results: ResultNameData, viewType: Int)
+        fun updateUser(results: ResultJoinData, viewType: Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -153,21 +154,19 @@ class RequestListAdapter :
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<ResultNameData>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<ResultJoinData>() {
             override fun areItemsTheSame(
-                oldItem: ResultNameData,
-                newItem: ResultNameData
+                oldItem: ResultJoinData,
+                newItem: ResultJoinData
             ): Boolean {
                 return oldItem.result_id === newItem.result_id
             }
 
             override fun areContentsTheSame(
-                oldItem: ResultNameData,
-                newItem: ResultNameData
+                oldItem: ResultJoinData,
+                newItem: ResultJoinData
             ): Boolean {
-                return oldItem.email.equals(newItem.email) && oldItem.large.equals(
-                    newItem.large
-                )
+                return oldItem.messageStatus.equals(newItem.messageStatus)
             }
         }
     }

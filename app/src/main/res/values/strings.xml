@@ -1,19 +1,10 @@
 <resources>
     <string name="app_name">Friend Request UI</string>
     <string name="action_settings">Settings</string>
-    <string name="action_delete">Delete</string>
-    <string name="storage_permission_reason">Storage permission allows us to store the pictures. Please allow in App Settings for additional functionality.</string>
-    <string name="camera_permission_reason">Camera permission allows us to use take pictures. Please allow in App Settings for additional functionality.</string>
-    <string name="user_name">user name</string>
-    <string name="add_user">Add User</string>
-    <string name="warning_msg">Please insert all the details !</string>
     <string name="welcome_user">Welcome User !!!</string>
-    <string name="insert_success"> Data added successfully!</string>
     <string name="delete_success"> Data removed successfully!</string>
-
-    <string-array name="userType">
-        <item>Admin</item>
-        <item>Normal User</item>
-        <item>Super User</item>
-    </string-array>
+    <string name="update_success"> Data updated successfully!</string>
+    <string name="default_result">default result</string>
+    <string name="accept">Member accepted</string>
+    <string name="reject">Member declined</string>
 </resources>
