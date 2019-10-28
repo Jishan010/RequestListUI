@@ -14,9 +14,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularimageview.CircularImageView
+import com.mobility.myapplication.Constants.ACCEPT
+import com.mobility.myapplication.Constants.REJECT
 import com.mobility.myapplication.R
 import com.mobility.myapplication.model.ResultJoinData
-import com.mobility.myapplication.view.MainActivity
 
 /**
  *
@@ -92,7 +93,7 @@ class RequestListAdapter :
 
             userNameTextView.text = user.first + " " + user.last
             descriptionTextView.text =
-                user.age + " , " + user.email + " , " + user.city + " , " + user.state + " , " + user.country
+                user.age.toString() + " , " + user.email + " , " + user.city + " , " + user.state + " , " + user.country
 
             user.large?.let {
 
@@ -102,7 +103,7 @@ class RequestListAdapter :
             }
             user.messageStatus?.let {
                 when (it) {
-                    MainActivity.ACCEPT -> {
+                    ACCEPT -> {
                         buttonGroup.visibility = View.GONE
                         messageGroup.visibility = View.VISIBLE
 
@@ -120,7 +121,7 @@ class RequestListAdapter :
                             )
                         )
                     }
-                    MainActivity.REJECT -> {
+                    REJECT -> {
                         buttonGroup.visibility = View.GONE
                         messageGroup.visibility = View.VISIBLE
                         messageTextView.text = itemView.context.resources.getString(R.string.reject)

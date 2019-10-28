@@ -1,18 +1,13 @@
 package com.mobility.myapplication.model
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.mobility.myapplication.network.ServiceBuilder
 import com.mobility.myapplication.network.ServiceInterface
-import com.mobility.myapplication.showMessage
-import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
 
@@ -25,38 +20,38 @@ import retrofit2.Response
     entities = [Results::class, Name::class, Location::class, Dob::class, Picture::class],
     version = 1
 )
-abstract class UserDatabase : RoomDatabase() {
+abstract class ResultsDatabase : RoomDatabase() {
 
     abstract fun getResultDao(): ResultDao
 
     fun cleanUp() {
-        userDataBaseInstance = null
+        resultsDataBaseInstance = null
     }
 
 
     companion object {
 
-        private var userDataBaseInstance: UserDatabase? = null
+        private var resultsDataBaseInstance: ResultsDatabase? = null
 
-        fun getInstance(context: Context): UserDatabase? {
-            if (userDataBaseInstance == null) {
-                userDataBaseInstance =
-                    Room.databaseBuilder(context, UserDatabase::class.java, "UserDatabase")
+        fun getInstance(context: Context): ResultsDatabase? {
+            if (resultsDataBaseInstance == null) {
+                resultsDataBaseInstance =
+                    Room.databaseBuilder(context, ResultsDatabase::class.java, "ResultsDatabase")
                         .addCallback(roomCallback).build()
             }
-            return userDataBaseInstance
+            return resultsDataBaseInstance
         }
 
         private val roomCallback = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                getUserList(userDataBaseInstance)
+                getUserList(resultsDataBaseInstance)
             }
         }
 
 
         //getting initial data from web server
-        private fun getUserList(userDataBaseInstance: UserDatabase?) {
+        private fun getUserList(resultsDataBaseInstance: ResultsDatabase?) {
             val serviceInterface =
                 ServiceBuilder.getRetrofitInstance()!!.create(ServiceInterface::class.java)
             val callUserList = serviceInterface!!.getFriendRequestsList("10")
@@ -72,13 +67,13 @@ abstract class UserDatabase : RoomDatabase() {
                             Log.d("Response", responseBody.results.toString())
                             responseBody.results?.let {
                                 for (results in it) {
-                                    userDataBaseInstance!!.getResultDao().addResult(results)
-                                    userDataBaseInstance.getResultDao().addName(results.name!!)
-                                    userDataBaseInstance!!.getResultDao()
+                                    resultsDataBaseInstance!!.getResultDao().addResult(results)
+                                    resultsDataBaseInstance.getResultDao().addName(results.name!!)
+                                    resultsDataBaseInstance!!.getResultDao()
                                         .addLocation(results.location!!)
-                                    userDataBaseInstance!!.getResultDao()
+                                    resultsDataBaseInstance!!.getResultDao()
                                         .addPicture(results.picture!!)
-                                    userDataBaseInstance!!.getResultDao()
+                                    resultsDataBaseInstance!!.getResultDao()
                                         .addDob(results.dob!!)
                                 }
                             }

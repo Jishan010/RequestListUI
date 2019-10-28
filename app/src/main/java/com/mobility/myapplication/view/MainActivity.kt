@@ -2,30 +2,33 @@ package com.mobility.myapplication.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.mobility.myapplication.Constants.ACCEPT
+import com.mobility.myapplication.Constants.REJECT
+import com.mobility.myapplication.Constants.UNDO
 import com.mobility.myapplication.R
 import com.mobility.myapplication.adapter.RequestListAdapter
-import com.mobility.myapplication.model.ResultJoinData
-import com.mobility.myapplication.model.Results
+import com.mobility.myapplication.model.*
 import com.mobility.myapplication.showMessage
-import com.mobility.myapplication.viewmodel.UserViewModel
+import com.mobility.myapplication.viewmodel.ResultsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener {
 
-    private var userViewModel: UserViewModel? = null
+    private var resultsViewModel: ResultsViewModel? = null
     private var recyclerView: RecyclerView? = null
     private var requestListAdapter: RequestListAdapter? = null
 
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
-        const val ACCEPT: String = "accepted"
-        const val REJECT: String = "rejected"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +40,8 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
         recyclerView!!.adapter = requestListAdapter
         requestListAdapter!!.setOnItemClickListener(this)
 
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
-        userViewModel?.getResultList()?.observe(this,
+        resultsViewModel = ViewModelProviders.of(this).get(ResultsViewModel::class.java)
+        resultsViewModel?.getResultList()?.observe(this,
             Observer<List<ResultJoinData>> { users ->
                 Log.d(TAG, users.toString())
                 requestListAdapter!!.submitList(users)
@@ -59,8 +62,12 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
                 requestListAdapter?.getUsers(viewHolder.adapterPosition)?.let {
                     val result = Results()
                     result.result_id = it.result_id!!
-                    userViewModel?.deleteResult(result)
-                    showMessage(resources.getString(R.string.delete_success))
+                    resultsViewModel?.deleteResult(result)
+                    setSnackBar(
+                        viewHolder.itemView,
+                        resources.getString(R.string.delete_success),
+                        it
+                    )
                 }
             }
         }).attachToRecyclerView(recyclerView)
@@ -74,14 +81,14 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
         when (viewType) {
             R.id.addFloatingActionButton -> {
                 showMessage(resources.getString(R.string.update_success))
-                userViewModel?.let {
+                resultsViewModel?.let {
                     result.messageStatus = ACCEPT
                     it.updateResult(result)
                 }
             }
             R.id.removeFloatingActionButton -> {
                 showMessage(resources.getString(R.string.update_success))
-                userViewModel?.let {
+                resultsViewModel?.let {
                     result.messageStatus = REJECT
                     it.updateResult(result)
                 }
@@ -94,6 +101,14 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
         recyclerView = findViewById(R.id.recycle_view)
         recyclerView?.layoutManager = (LinearLayoutManager(this, RecyclerView.VERTICAL, false))
         recyclerView?.hasFixedSize()
+    }
+
+    private fun setSnackBar(view: View, message: String, results: ResultJoinData) {
+        val snack = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        snack.setAction(UNDO) {
+            resultsViewModel?.restoreResults(results)
+        }
+        snack.show()
     }
 
 }

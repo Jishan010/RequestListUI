@@ -14,7 +14,7 @@ data class ResultJoinData(
     val state: String? = null,
     val country: String? = null,
     val large: String? = null,
-    val age: String? = null,
+    val age: Int? = null,
     val messageStatus: String? = null,
     val result_id: Int? = 0
 )
