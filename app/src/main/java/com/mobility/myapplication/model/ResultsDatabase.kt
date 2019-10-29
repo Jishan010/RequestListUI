@@ -82,8 +82,6 @@ abstract class ResultsDatabase : RoomDatabase() {
                 }
             })
         }
-
-
     }
 
 

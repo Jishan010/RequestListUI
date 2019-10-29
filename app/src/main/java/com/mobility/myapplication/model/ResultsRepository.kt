@@ -62,38 +62,47 @@ class ResultsRepository(application: Application) {
 
     class RestoreOperationAsyncTask : AsyncTask<ResultJoinData, Void, Void>() {
 
-
         override fun doInBackground(vararg results: ResultJoinData): Void? {
-            val result = Results()
-            result.result_id = results[0].result_id!!
-            result.gender = results[0].gender
-            result.email = results[0].email
-            result.messageStatus = results[0].messageStatus
-            resultDao?.addResult(result)
+            with(Results())
+            {
+                result_id = results[0].result_id!!
+                gender = results[0].gender
+                email = results[0].email
+                messageStatus = results[0].messageStatus
+                resultDao?.addResult(this)
+            }
 
-            val name = Name()
-            name.name_id = results[0].result_id!!
-            name.title = results[0].title
-            name.first = results[0].first
-            name.last = results[0].last
-            resultDao?.addName(name)
+            with(Name())
+            {
+                name_id = results[0].result_id!!
+                title = results[0].title
+                first = results[0].first
+                last = results[0].last
+                resultDao?.addName(this)
+            }
 
-            val location = Location()
-            location.location_id = results[0].result_id!!
-            location.city = results[0].city
-            location.state = results[0].state
-            location.country = results[0].country
-            resultDao?.addLocation(location)
+            with(Location())
+            {
+                location_id = results[0].result_id!!
+                city = results[0].city
+                state = results[0].state
+                country = results[0].country
+                resultDao?.addLocation(this)
+            }
 
-            val picture = Picture()
-            picture.picture_id = results[0].result_id!!
-            picture.large = results[0].large
-            resultDao?.addPicture(picture)
+            with(Picture())
+            {
+                picture_id = results[0].result_id!!
+                large = results[0].large
+                resultDao?.addPicture(this)
+            }
 
-            val dob = Dob()
-            dob.dob_id = results[0].result_id!!
-            dob.age = results[0].age
-            resultDao?.addDob(dob)
+            with(Dob())
+            {
+                dob_id = results[0].result_id!!
+                age = results[0].age
+                resultDao?.addDob(this)
+            }
 
             return null
         }
