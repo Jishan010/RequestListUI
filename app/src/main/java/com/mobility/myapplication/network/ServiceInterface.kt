@@ -1,6 +1,6 @@
 package com.mobility.myapplication.network
 
-import com.mobility.myapplication.model.Example
+import com.mobility.myapplication.model.ResultList
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,5 +12,5 @@ import retrofit2.http.Query
 
 interface ServiceInterface {
     @GET("api/")
-    fun getFriendRequestsList(@Query("results") results: String): Call<Example>
+    fun getFriendRequestsList(@Query("results") results: String): Call<ResultList>
 }

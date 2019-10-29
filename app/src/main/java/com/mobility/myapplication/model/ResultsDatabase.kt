@@ -55,12 +55,12 @@ abstract class ResultsDatabase : RoomDatabase() {
             val serviceInterface =
                 ServiceBuilder.getRetrofitInstance()!!.create(ServiceInterface::class.java)
             val callUserList = serviceInterface!!.getFriendRequestsList("10")
-            callUserList.enqueue(object : retrofit2.Callback<Example> {
+            callUserList.enqueue(object : retrofit2.Callback<ResultList> {
 
-                override fun onFailure(call: Call<Example>, t: Throwable) {
+                override fun onFailure(call: Call<ResultList>, t: Throwable) {
                 }
 
-                override fun onResponse(call: Call<Example>, response: Response<Example>) {
+                override fun onResponse(call: Call<ResultList>, response: Response<ResultList>) {
                     if (response.isSuccessful) {
                         Thread {
                             val responseBody = response.body()!!
