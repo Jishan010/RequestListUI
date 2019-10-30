@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import com.mobility.myapplication.Constants.DELETE
 import com.mobility.myapplication.Constants.INSERT
 import com.mobility.myapplication.Constants.UPDATE
-import retrofit2.http.DELETE
 
 /**
  *
