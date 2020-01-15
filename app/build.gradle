@@ -3,6 +3,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 29
@@ -44,6 +46,12 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.7"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    //to enable crashalytics
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

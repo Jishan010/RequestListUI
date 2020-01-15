@@ -3,12 +3,15 @@ package com.mobility.myapplication.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
 import com.mobility.myapplication.Constants.ACCEPT
 import com.mobility.myapplication.Constants.REJECT
@@ -47,6 +50,8 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
                 requestListAdapter!!.submitList(users)
             })
 
+
+
         //swipe to delete functionality starts from here
         ItemTouchHelper(object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -71,7 +76,24 @@ class MainActivity : AppCompatActivity(), RequestListAdapter.OnItemClickListener
                 }
             }
         }).attachToRecyclerView(recyclerView)
+
+
+        /*
+        * below code snippet helps to force you a crash so that we can test it on firebase*/
+
+       /* val crashButton = Button(this@MainActivity)
+        crashButton.text = "Crash!"
+        crashButton.setOnClickListener {
+            Crashlytics.getInstance().crash() // Force a crash
+        }
+
+        addContentView(crashButton, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT))*/
+
     }
+
+
 
     override fun updateUser(results: ResultJoinData, viewType: Int) {
         val result = Results()

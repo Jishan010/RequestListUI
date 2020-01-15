@@ -14,6 +14,10 @@ import java.util.concurrent.TimeUnit
 object ServiceBuilder {
     // Create Retrofit Instance
     private var retrofit: Retrofit? = null
+
+    private var serviceInterface: ServiceInterface? = null
+
+
     //for log
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     // Create OkHttp Client
@@ -30,6 +34,13 @@ object ServiceBuilder {
             retrofit;
 
         return retrofit;
+    }
+
+
+    fun getSerice() : ServiceInterface {
+        serviceInterface = retrofit!!.create(ServiceInterface::class.java)
+
+        return  serviceInterface!!
     }
 
 }
