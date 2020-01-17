@@ -2,6 +2,7 @@ package com.mobility.myapplication.model;
 
 import android.database.Cursor;
 import androidx.lifecycle.LiveData;
+import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
@@ -9,6 +10,7 @@ import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import java.lang.Exception;
+import java.lang.Integer;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
@@ -30,12 +32,16 @@ public final class ResultDao_Impl implements ResultDao {
 
   private final EntityInsertionAdapter<Dob> __insertionAdapterOfDob;
 
+  private final EntityDeletionOrUpdateAdapter<Results> __deletionAdapterOfResults;
+
+  private final EntityDeletionOrUpdateAdapter<Results> __updateAdapterOfResults;
+
   public ResultDao_Impl(RoomDatabase __db) {
     this.__db = __db;
     this.__insertionAdapterOfResults = new EntityInsertionAdapter<Results>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `result_table` (`result_id`,`gender`,`email`) VALUES (nullif(?, 0),?,?)";
+        return "INSERT OR ABORT INTO `result_table` (`result_id`,`gender`,`email`,`messageStatus`) VALUES (nullif(?, 0),?,?,?)";
       }
 
       @Override
@@ -50,6 +56,11 @@ public final class ResultDao_Impl implements ResultDao {
           stmt.bindNull(3);
         } else {
           stmt.bindString(3, value.getEmail());
+        }
+        if (value.getMessageStatus() == null) {
+          stmt.bindNull(4);
+        } else {
+          stmt.bindString(4, value.getMessageStatus());
         }
       }
     };
@@ -108,16 +119,16 @@ public final class ResultDao_Impl implements ResultDao {
     this.__insertionAdapterOfPicture = new EntityInsertionAdapter<Picture>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `picture_table` (`picture_id`,`thumbnail`) VALUES (nullif(?, 0),?)";
+        return "INSERT OR ABORT INTO `picture_table` (`picture_id`,`large`) VALUES (nullif(?, 0),?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Picture value) {
         stmt.bindLong(1, value.getPicture_id());
-        if (value.getThumbnail() == null) {
+        if (value.getLarge() == null) {
           stmt.bindNull(2);
         } else {
-          stmt.bindString(2, value.getThumbnail());
+          stmt.bindString(2, value.getLarge());
         }
       }
     };
@@ -135,6 +146,44 @@ public final class ResultDao_Impl implements ResultDao {
         } else {
           stmt.bindLong(2, value.getAge());
         }
+      }
+    };
+    this.__deletionAdapterOfResults = new EntityDeletionOrUpdateAdapter<Results>(__db) {
+      @Override
+      public String createQuery() {
+        return "DELETE FROM `result_table` WHERE `result_id` = ?";
+      }
+
+      @Override
+      public void bind(SupportSQLiteStatement stmt, Results value) {
+        stmt.bindLong(1, value.getResult_id());
+      }
+    };
+    this.__updateAdapterOfResults = new EntityDeletionOrUpdateAdapter<Results>(__db) {
+      @Override
+      public String createQuery() {
+        return "UPDATE OR ABORT `result_table` SET `result_id` = ?,`gender` = ?,`email` = ?,`messageStatus` = ? WHERE `result_id` = ?";
+      }
+
+      @Override
+      public void bind(SupportSQLiteStatement stmt, Results value) {
+        stmt.bindLong(1, value.getResult_id());
+        if (value.getGender() == null) {
+          stmt.bindNull(2);
+        } else {
+          stmt.bindString(2, value.getGender());
+        }
+        if (value.getEmail() == null) {
+          stmt.bindNull(3);
+        } else {
+          stmt.bindString(3, value.getEmail());
+        }
+        if (value.getMessageStatus() == null) {
+          stmt.bindNull(4);
+        } else {
+          stmt.bindString(4, value.getMessageStatus());
+        }
+        stmt.bindLong(5, value.getResult_id());
       }
     };
   }
@@ -200,6 +249,30 @@ public final class ResultDao_Impl implements ResultDao {
   }
 
   @Override
+  public void deleteResult(final Results results) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __deletionAdapterOfResults.handle(results);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void updateResult(final Results results) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __updateAdapterOfResults.handle(results);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
+  }
+
+  @Override
   public LiveData<List<Results>> getResultLists() {
     final String _sql = "select * from result_table";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
@@ -211,6 +284,7 @@ public final class ResultDao_Impl implements ResultDao {
           final int _cursorIndexOfResultId = CursorUtil.getColumnIndexOrThrow(_cursor, "result_id");
           final int _cursorIndexOfGender = CursorUtil.getColumnIndexOrThrow(_cursor, "gender");
           final int _cursorIndexOfEmail = CursorUtil.getColumnIndexOrThrow(_cursor, "email");
+          final int _cursorIndexOfMessageStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "messageStatus");
           final List<Results> _result = new ArrayList<Results>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final Results _item;
@@ -224,6 +298,9 @@ public final class ResultDao_Impl implements ResultDao {
             final String _tmpEmail;
             _tmpEmail = _cursor.getString(_cursorIndexOfEmail);
             _item.setEmail(_tmpEmail);
+            final String _tmpMessageStatus;
+            _tmpMessageStatus = _cursor.getString(_cursorIndexOfMessageStatus);
+            _item.setMessageStatus(_tmpMessageStatus);
             _result.add(_item);
           }
           return _result;
@@ -240,29 +317,33 @@ public final class ResultDao_Impl implements ResultDao {
   }
 
   @Override
-  public Name getNameList(final int name_id) {
-    final String _sql = "select * from name_table where name_id=?";
+  public Results getResult(final int result_id) {
+    final String _sql = "select * from result_table where result_id=?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindLong(_argIndex, name_id);
+    _statement.bindLong(_argIndex, result_id);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
-      final int _cursorIndexOfNameId = CursorUtil.getColumnIndexOrThrow(_cursor, "name_id");
-      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
-      final int _cursorIndexOfFirst = CursorUtil.getColumnIndexOrThrow(_cursor, "first");
-      final int _cursorIndexOfLast = CursorUtil.getColumnIndexOrThrow(_cursor, "last");
-      final Name _result;
+      final int _cursorIndexOfResultId = CursorUtil.getColumnIndexOrThrow(_cursor, "result_id");
+      final int _cursorIndexOfGender = CursorUtil.getColumnIndexOrThrow(_cursor, "gender");
+      final int _cursorIndexOfEmail = CursorUtil.getColumnIndexOrThrow(_cursor, "email");
+      final int _cursorIndexOfMessageStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "messageStatus");
+      final Results _result;
       if(_cursor.moveToFirst()) {
-        final int _tmpName_id;
-        _tmpName_id = _cursor.getInt(_cursorIndexOfNameId);
-        final String _tmpTitle;
-        _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
-        final String _tmpFirst;
-        _tmpFirst = _cursor.getString(_cursorIndexOfFirst);
-        final String _tmpLast;
-        _tmpLast = _cursor.getString(_cursorIndexOfLast);
-        _result = new Name(_tmpName_id,_tmpTitle,_tmpFirst,_tmpLast);
+        _result = new Results();
+        final int _tmpResult_id;
+        _tmpResult_id = _cursor.getInt(_cursorIndexOfResultId);
+        _result.setResult_id(_tmpResult_id);
+        final String _tmpGender;
+        _tmpGender = _cursor.getString(_cursorIndexOfGender);
+        _result.setGender(_tmpGender);
+        final String _tmpEmail;
+        _tmpEmail = _cursor.getString(_cursorIndexOfEmail);
+        _result.setEmail(_tmpEmail);
+        final String _tmpMessageStatus;
+        _tmpMessageStatus = _cursor.getString(_cursorIndexOfMessageStatus);
+        _result.setMessageStatus(_tmpMessageStatus);
       } else {
         _result = null;
       }
@@ -274,15 +355,17 @@ public final class ResultDao_Impl implements ResultDao {
   }
 
   @Override
-  public LiveData<List<ResultNameData>> getResultNameDataList() {
-    final String _sql = "select result_table.email , result_table.gender  ,name_table.title ,name_table.first,name_table.last,location_table.city,location_table.state,location_table.country ,dob_table.age,picture_table.thumbnail from result_table INNER JOIN name_table ON result_table.result_id=name_table.name_id INNER JOIN location_table ON   result_table.result_id=location_table.location_id  INNER JOIN dob_table ON result_table.result_id=dob_table.dob_id  INNER JOIN picture_table ON result_table.result_id=picture_table.picture_id ";
+  public LiveData<List<ResultJoinData>> getResultNameDataList() {
+    final String _sql = "select result_table.email ,result_table.result_id,result_table.messageStatus, result_table.gender  ,name_table.title ,name_table.first,name_table.last,location_table.city,location_table.state,location_table.country ,dob_table.age,picture_table.large from result_table INNER JOIN name_table ON result_table.result_id=name_table.name_id INNER JOIN location_table ON   result_table.result_id=location_table.location_id  INNER JOIN dob_table ON result_table.result_id=dob_table.dob_id  INNER JOIN picture_table ON result_table.result_id=picture_table.picture_id ";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
-    return __db.getInvalidationTracker().createLiveData(new String[]{"result_table","name_table","location_table","dob_table","picture_table"}, false, new Callable<List<ResultNameData>>() {
+    return __db.getInvalidationTracker().createLiveData(new String[]{"result_table","name_table","location_table","dob_table","picture_table"}, false, new Callable<List<ResultJoinData>>() {
       @Override
-      public List<ResultNameData> call() throws Exception {
+      public List<ResultJoinData> call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfEmail = CursorUtil.getColumnIndexOrThrow(_cursor, "email");
+          final int _cursorIndexOfResultId = CursorUtil.getColumnIndexOrThrow(_cursor, "result_id");
+          final int _cursorIndexOfMessageStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "messageStatus");
           final int _cursorIndexOfGender = CursorUtil.getColumnIndexOrThrow(_cursor, "gender");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfFirst = CursorUtil.getColumnIndexOrThrow(_cursor, "first");
@@ -291,12 +374,20 @@ public final class ResultDao_Impl implements ResultDao {
           final int _cursorIndexOfState = CursorUtil.getColumnIndexOrThrow(_cursor, "state");
           final int _cursorIndexOfCountry = CursorUtil.getColumnIndexOrThrow(_cursor, "country");
           final int _cursorIndexOfAge = CursorUtil.getColumnIndexOrThrow(_cursor, "age");
-          final int _cursorIndexOfThumbnail = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail");
-          final List<ResultNameData> _result = new ArrayList<ResultNameData>(_cursor.getCount());
+          final int _cursorIndexOfLarge = CursorUtil.getColumnIndexOrThrow(_cursor, "large");
+          final List<ResultJoinData> _result = new ArrayList<ResultJoinData>(_cursor.getCount());
           while(_cursor.moveToNext()) {
-            final ResultNameData _item;
+            final ResultJoinData _item;
             final String _tmpEmail;
             _tmpEmail = _cursor.getString(_cursorIndexOfEmail);
+            final Integer _tmpResult_id;
+            if (_cursor.isNull(_cursorIndexOfResultId)) {
+              _tmpResult_id = null;
+            } else {
+              _tmpResult_id = _cursor.getInt(_cursorIndexOfResultId);
+            }
+            final String _tmpMessageStatus;
+            _tmpMessageStatus = _cursor.getString(_cursorIndexOfMessageStatus);
             final String _tmpGender;
             _tmpGender = _cursor.getString(_cursorIndexOfGender);
             final String _tmpTitle;
@@ -311,11 +402,15 @@ public final class ResultDao_Impl implements ResultDao {
             _tmpState = _cursor.getString(_cursorIndexOfState);
             final String _tmpCountry;
             _tmpCountry = _cursor.getString(_cursorIndexOfCountry);
-            final String _tmpAge;
-            _tmpAge = _cursor.getString(_cursorIndexOfAge);
-            final String _tmpThumbnail;
-            _tmpThumbnail = _cursor.getString(_cursorIndexOfThumbnail);
-            _item = new ResultNameData(_tmpTitle,_tmpFirst,_tmpLast,_tmpGender,_tmpEmail,_tmpCity,_tmpState,_tmpCountry,_tmpThumbnail,_tmpAge);
+            final Integer _tmpAge;
+            if (_cursor.isNull(_cursorIndexOfAge)) {
+              _tmpAge = null;
+            } else {
+              _tmpAge = _cursor.getInt(_cursorIndexOfAge);
+            }
+            final String _tmpLarge;
+            _tmpLarge = _cursor.getString(_cursorIndexOfLarge);
+            _item = new ResultJoinData(_tmpTitle,_tmpFirst,_tmpLast,_tmpGender,_tmpEmail,_tmpCity,_tmpState,_tmpCountry,_tmpLarge,_tmpAge,_tmpMessageStatus,_tmpResult_id);
             _result.add(_item);
           }
           return _result;
